@@ -1,0 +1,4 @@
+R5T.NetStandard.OS - Library for Windows and non-Windows operating system functionality.
+
+Goals
+

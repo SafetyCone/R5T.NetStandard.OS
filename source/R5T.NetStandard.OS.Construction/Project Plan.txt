@@ -1,0 +1,4 @@
+R5T.NetStandard.OS.Construction - A construction console entry-point for the R5T.NetStandard.OS library (Library for Windows and non-Windows operating system functionality.).
+
+Goals
+
