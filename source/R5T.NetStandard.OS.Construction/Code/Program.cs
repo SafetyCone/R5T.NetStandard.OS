@@ -6,7 +6,7 @@ namespace R5T.NetStandard.OS.Construction
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Construction.SubMain();   
         }
     }
 }
