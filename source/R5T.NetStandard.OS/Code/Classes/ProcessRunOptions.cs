@@ -8,6 +8,9 @@ namespace R5T.NetStandard.OS
     {
         #region Static
 
+        /// <summary>
+        /// Throws an error if any non-null error data is received.
+        /// </summary>
         public static void DefaultReceiveErrorData(object sender, DataReceivedEventArgs e)
         {
             if(e.Data is null)
