@@ -7,13 +7,13 @@ namespace R5T.NetStandard.OS
 {
     public static class ProcessRunner
     {
-        public static string GetCommandLine(string command, string arguments)
+        public static string GetCommandLineIncantation(string command, string arguments)
         {
             var commandLine = $"{command} {arguments}";
             return commandLine;
         }
 
-        public static int Run(string command, string arguments)
+        public static int RunOld(string command, string arguments)
         {
             var output = ProcessRunner.Run(command, arguments, Console.Out);
             return output;
@@ -49,7 +49,7 @@ namespace R5T.NetStandard.OS
             {
                 outputWriter.WriteLine();
 
-                var commandLine = ProcessRunner.GetCommandLine(runOptions.Command, runOptions.Arguments);
+                var commandLine = ProcessRunner.GetCommandLineIncantation(runOptions.Command, runOptions.Arguments);
                 outputWriter.WriteLine($"Command:\n{commandLine}");
 
                 throw new Exception("Process run error occurred.");
@@ -91,6 +91,29 @@ namespace R5T.NetStandard.OS
             process.Close();
 
             return exitCode;
+        }
+
+        public static ProcessOutputCollector Run(string command, string arguments, bool throwIfAnyError = true)
+        {
+            var outputCollector = new ProcessOutputCollector();
+            var runOptions = new ProcessRunOptions
+            {
+                Command = command,
+                Arguments = arguments,
+                ReceiveOutputData = outputCollector.ReceiveOutputData,
+                ReceiveErrorData = outputCollector.ReceiveErrorData,
+            };
+
+            ProcessRunner.Run(runOptions);
+
+            if (throwIfAnyError && outputCollector.AnyError)
+            {
+                var commandLineIncantation = ProcessRunner.GetCommandLineIncantation(command, arguments);
+
+                throw new Exception($"Automation failure.\nCommand:\n{commandLineIncantation}\nReceived:\n{outputCollector.GetErrorText()}");
+            }
+
+            return outputCollector;
         }
     }
 }
